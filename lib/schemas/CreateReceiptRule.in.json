@@ -1,0 +1,280 @@
+{
+    "type": "object",
+    "properties": {
+        "Action": {
+            "required": true,
+            "type": "string"
+        },
+        "Version": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "Represents a request to create a receipt rule. You use receipt rules to receive email with Amazon SES. For more information, see the <a href=\"http://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-concepts.html\">Amazon SES Developer Guide</a>.",
+            "example": {
+                "After": "",
+                "Rule": {
+                    "Actions": [
+                        {
+                            "S3Action": {
+                                "BucketName": "MyBucket",
+                                "ObjectKeyPrefix": "email"
+                            }
+                        }
+                    ],
+                    "Enabled": true,
+                    "Name": "MyRule",
+                    "ScanEnabled": true,
+                    "TlsPolicy": "Optional"
+                },
+                "RuleSetName": "MyRuleSet"
+            },
+            "properties": {
+                "After": {
+                    "description": "The name of an existing rule after which the new rule will be placed. If this parameter is null, the new rule will be inserted at the beginning of the rule list.",
+                    "type": "string"
+                },
+                "Rule": {
+                    "description": "A data structure that contains the specified rule's name, actions, recipients, domains, enabled status, scan status, and TLS policy.",
+                    "properties": {
+                        "Actions": {
+                            "description": "An ordered list of actions to perform on messages that match at least one of the recipient email addresses or domains specified in the receipt rule.",
+                            "items": {
+                                "description": "<p>An action that Amazon SES can take when it receives an email on behalf of one or more email addresses or domains that you own. An instance of this data type can represent only one action.</p> <p>For information about setting up receipt rules, see the <a href=\"http://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-receipt-rules.html\">Amazon SES Developer Guide</a>.</p>",
+                                "properties": {
+                                    "AddHeaderAction": {
+                                        "description": "Adds a header to the received email.",
+                                        "properties": {
+                                            "HeaderName": {
+                                                "description": "The name of the header to add. Must be between 1 and 50 characters, inclusive, and consist of alphanumeric (a-z, A-Z, 0-9) characters and dashes only.",
+                                                "type": "string"
+                                            },
+                                            "HeaderValue": {
+                                                "description": "Must be less than 2048 characters, and must not contain newline characters (\"\\r\" or \"\\n\").",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "HeaderName",
+                                            "HeaderValue"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "BounceAction": {
+                                        "description": "Rejects the received email by returning a bounce response to the sender and, optionally, publishes a notification to Amazon Simple Notification Service (Amazon SNS).",
+                                        "properties": {
+                                            "Message": {
+                                                "description": "Human-readable text to include in the bounce message.",
+                                                "type": "string"
+                                            },
+                                            "Sender": {
+                                                "description": "The email address of the sender of the bounced email. This is the address from which the bounce message will be sent.",
+                                                "type": "string"
+                                            },
+                                            "SmtpReplyCode": {
+                                                "description": "The SMTP reply code, as defined by <a href=\"https://tools.ietf.org/html/rfc5321\">RFC 5321</a>.",
+                                                "type": "string"
+                                            },
+                                            "StatusCode": {
+                                                "description": "The SMTP enhanced status code, as defined by <a href=\"https://tools.ietf.org/html/rfc3463\">RFC 3463</a>.",
+                                                "type": "string"
+                                            },
+                                            "TopicArn": {
+                                                "description": "The Amazon Resource Name (ARN) of the Amazon SNS topic to notify when the bounce action is taken. An example of an Amazon SNS topic ARN is <code>arn:aws:sns:us-west-2:123456789012:MyTopic</code>. For more information about Amazon SNS topics, see the <a href=\"http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html\">Amazon SNS Developer Guide</a>.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "SmtpReplyCode",
+                                            "Message",
+                                            "Sender"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "LambdaAction": {
+                                        "description": "Calls an AWS Lambda function, and optionally, publishes a notification to Amazon SNS.",
+                                        "properties": {
+                                            "FunctionArn": {
+                                                "description": "The Amazon Resource Name (ARN) of the AWS Lambda function. An example of an AWS Lambda function ARN is <code>arn:aws:lambda:us-west-2:account-id:function:MyFunction</code>. For more information about AWS Lambda, see the <a href=\"http://docs.aws.amazon.com/lambda/latest/dg/welcome.html\">AWS Lambda Developer Guide</a>.",
+                                                "type": "string"
+                                            },
+                                            "InvocationType": {
+                                                "description": "<p>The invocation type of the AWS Lambda function. An invocation type of <code>RequestResponse</code> means that the execution of the function will immediately result in a response, and a value of <code>Event</code> means that the function will be invoked asynchronously. The default value is <code>Event</code>. For information about AWS Lambda invocation types, see the <a href=\"http://docs.aws.amazon.com/lambda/latest/dg/API_Invoke.html\">AWS Lambda Developer Guide</a>.</p> <important> <p>There is a 30-second timeout on <code>RequestResponse</code> invocations. You should use <code>Event</code> invocation in most cases. Use <code>RequestResponse</code> only when you want to make a mail flow decision, such as whether to stop the receipt rule or the receipt rule set.</p> </important>",
+                                                "enum": [
+                                                    "Event",
+                                                    "RequestResponse"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "TopicArn": {
+                                                "description": "The Amazon Resource Name (ARN) of the Amazon SNS topic to notify when the Lambda action is taken. An example of an Amazon SNS topic ARN is <code>arn:aws:sns:us-west-2:123456789012:MyTopic</code>. For more information about Amazon SNS topics, see the <a href=\"http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html\">Amazon SNS Developer Guide</a>.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "FunctionArn"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "S3Action": {
+                                        "description": "Saves the received message to an Amazon Simple Storage Service (Amazon S3) bucket and, optionally, publishes a notification to Amazon SNS.",
+                                        "properties": {
+                                            "BucketName": {
+                                                "description": "The name of the Amazon S3 bucket that incoming email will be saved to.",
+                                                "type": "string"
+                                            },
+                                            "KmsKeyArn": {
+                                                "description": "<p>The customer master key that Amazon SES should use to encrypt your emails before saving them to the Amazon S3 bucket. You can use the default master key or a custom master key you created in AWS KMS as follows:</p> <ul> <li> <p>To use the default master key, provide an ARN in the form of <code>arn:aws:kms:REGION:ACCOUNT-ID-WITHOUT-HYPHENS:alias/aws/ses</code>. For example, if your AWS account ID is 123456789012 and you want to use the default master key in the US West (Oregon) region, the ARN of the default master key would be <code>arn:aws:kms:us-west-2:123456789012:alias/aws/ses</code>. If you use the default master key, you don't need to perform any extra steps to give Amazon SES permission to use the key.</p> </li> <li> <p>To use a custom master key you created in AWS KMS, provide the ARN of the master key and ensure that you add a statement to your key's policy to give Amazon SES permission to use it. For more information about giving permissions, see the <a href=\"http://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-permissions.html\">Amazon SES Developer Guide</a>.</p> </li> </ul> <p>For more information about key policies, see the <a href=\"http://docs.aws.amazon.com/kms/latest/developerguide/concepts.html\">AWS KMS Developer Guide</a>. If you do not specify a master key, Amazon SES will not encrypt your emails.</p> <important> <p>Your mail is encrypted by Amazon SES using the Amazon S3 encryption client before the mail is submitted to Amazon S3 for storage. It is not encrypted using Amazon S3 server-side encryption. This means that you must use the Amazon S3 encryption client to decrypt the email after retrieving it from Amazon S3, as the service has no access to use your AWS KMS keys for decryption. This encryption client is currently available with the <a href=\"http://aws.amazon.com/sdk-for-java/\">AWS SDK for Java</a> and <a href=\"http://aws.amazon.com/sdk-for-ruby/\">AWS SDK for Ruby</a> only. For more information about client-side encryption using AWS KMS master keys, see the <a href=\"http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingClientSideEncryption.html\">Amazon S3 Developer Guide</a>.</p> </important>",
+                                                "type": "string"
+                                            },
+                                            "ObjectKeyPrefix": {
+                                                "description": "The key prefix of the Amazon S3 bucket. The key prefix is similar to a directory name that enables you to store similar data under the same directory in a bucket.",
+                                                "type": "string"
+                                            },
+                                            "TopicArn": {
+                                                "description": "The ARN of the Amazon SNS topic to notify when the message is saved to the Amazon S3 bucket. An example of an Amazon SNS topic ARN is <code>arn:aws:sns:us-west-2:123456789012:MyTopic</code>. For more information about Amazon SNS topics, see the <a href=\"http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html\">Amazon SNS Developer Guide</a>.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "BucketName"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "SNSAction": {
+                                        "description": "Publishes the email content within a notification to Amazon SNS.",
+                                        "properties": {
+                                            "Encoding": {
+                                                "description": "The encoding to use for the email within the Amazon SNS notification. UTF-8 is easier to use, but may not preserve all special characters when a message was encoded with a different encoding format. Base64 preserves all special characters. The default value is UTF-8.",
+                                                "enum": [
+                                                    "UTF-8",
+                                                    "Base64"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "TopicArn": {
+                                                "description": "The Amazon Resource Name (ARN) of the Amazon SNS topic to notify. An example of an Amazon SNS topic ARN is <code>arn:aws:sns:us-west-2:123456789012:MyTopic</code>. For more information about Amazon SNS topics, see the <a href=\"http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html\">Amazon SNS Developer Guide</a>.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "TopicArn"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "StopAction": {
+                                        "description": "Terminates the evaluation of the receipt rule set and optionally publishes a notification to Amazon SNS.",
+                                        "properties": {
+                                            "Scope": {
+                                                "description": "The name of the RuleSet that is being stopped.",
+                                                "enum": [
+                                                    "RuleSet"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "TopicArn": {
+                                                "description": "The Amazon Resource Name (ARN) of the Amazon SNS topic to notify when the stop action is taken. An example of an Amazon SNS topic ARN is <code>arn:aws:sns:us-west-2:123456789012:MyTopic</code>. For more information about Amazon SNS topics, see the <a href=\"http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html\">Amazon SNS Developer Guide</a>.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "Scope"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "WorkmailAction": {
+                                        "description": "Calls Amazon WorkMail and, optionally, publishes a notification to Amazon Amazon SNS.",
+                                        "properties": {
+                                            "OrganizationArn": {
+                                                "description": "The ARN of the Amazon WorkMail organization. An example of an Amazon WorkMail organization ARN is <code>arn:aws:workmail:us-west-2:123456789012:organization/m-68755160c4cb4e29a2b2f8fb58f359d7</code>. For information about Amazon WorkMail organizations, see the <a href=\"http://docs.aws.amazon.com/workmail/latest/adminguide/organizations_overview.html\">Amazon WorkMail Administrator Guide</a>.",
+                                                "type": "string"
+                                            },
+                                            "TopicArn": {
+                                                "description": "The Amazon Resource Name (ARN) of the Amazon SNS topic to notify when the WorkMail action is called. An example of an Amazon SNS topic ARN is <code>arn:aws:sns:us-west-2:123456789012:MyTopic</code>. For more information about Amazon SNS topics, see the <a href=\"http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html\">Amazon SNS Developer Guide</a>.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "OrganizationArn"
+                                        ],
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "Enabled": {
+                            "description": "If <code>true</code>, the receipt rule is active. The default value is <code>false</code>.",
+                            "type": "boolean"
+                        },
+                        "Name": {
+                            "description": "<p>The name of the receipt rule. The name must:</p> <ul> <li> <p>This value can only contain ASCII letters (a-z, A-Z), numbers (0-9), underscores (_), or dashes (-).</p> </li> <li> <p>Start and end with a letter or number.</p> </li> <li> <p>Contain less than 64 characters.</p> </li> </ul>",
+                            "type": "string"
+                        },
+                        "Recipients": {
+                            "description": "The recipient domains and email addresses that the receipt rule applies to. If this field is not specified, this rule will match all recipients under all verified domains.",
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "ScanEnabled": {
+                            "description": "If <code>true</code>, then messages that this receipt rule applies to are scanned for spam and viruses. The default value is <code>false</code>.",
+                            "type": "boolean"
+                        },
+                        "TlsPolicy": {
+                            "description": "Specifies whether Amazon SES should require that incoming email is delivered over a connection encrypted with Transport Layer Security (TLS). If this parameter is set to <code>Require</code>, Amazon SES will bounce emails that are not received over TLS. The default is <code>Optional</code>.",
+                            "enum": [
+                                "Require",
+                                "Optional"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Name"
+                    ],
+                    "type": "object"
+                },
+                "RuleSetName": {
+                    "description": "The name of the rule set that the receipt rule will be added to.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "RuleSetName",
+                "Rule"
+            ],
+            "type": "object"
+        },
+        "X_Amz_Content_Sha256": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Date": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Algorithm": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Credential": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Security_Token": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Signature": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_SignedHeaders": {
+            "required": false,
+            "type": "string"
+        }
+    }
+}

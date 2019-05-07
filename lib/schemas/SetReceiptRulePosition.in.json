@@ -1,0 +1,68 @@
+{
+    "type": "object",
+    "properties": {
+        "Action": {
+            "required": true,
+            "type": "string"
+        },
+        "Version": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "Represents a request to set the position of a receipt rule in a receipt rule set. You use receipt rule sets to receive email with Amazon SES. For more information, see the <a href=\"http://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-concepts.html\">Amazon SES Developer Guide</a>.",
+            "example": {
+                "After": "PutRuleAfterThisRule",
+                "RuleName": "RuleToReposition",
+                "RuleSetName": "MyRuleSet"
+            },
+            "properties": {
+                "After": {
+                    "description": "The name of the receipt rule after which to place the specified receipt rule.",
+                    "type": "string"
+                },
+                "RuleName": {
+                    "description": "The name of the receipt rule to reposition.",
+                    "type": "string"
+                },
+                "RuleSetName": {
+                    "description": "The name of the receipt rule set that contains the receipt rule to reposition.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "RuleSetName",
+                "RuleName"
+            ],
+            "type": "object"
+        },
+        "X_Amz_Content_Sha256": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Date": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Algorithm": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Credential": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Security_Token": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Signature": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_SignedHeaders": {
+            "required": false,
+            "type": "string"
+        }
+    }
+}

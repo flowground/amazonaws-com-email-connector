@@ -1,0 +1,162 @@
+{
+    "type": "object",
+    "properties": {
+        "Action": {
+            "required": true,
+            "type": "string"
+        },
+        "Version": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "Represents a request to update the event destination of a configuration set. Configuration sets enable you to publish email sending events. For information about using configuration sets, see the <a href=\"http://docs.aws.amazon.com/ses/latest/DeveloperGuide/monitor-sending-activity.html\">Amazon SES Developer Guide</a>.",
+            "properties": {
+                "ConfigurationSetName": {
+                    "description": "The name of the configuration set that contains the event destination that you want to update.",
+                    "type": "string"
+                },
+                "EventDestination": {
+                    "description": "The event destination object that you want to apply to the specified configuration set.",
+                    "properties": {
+                        "CloudWatchDestination": {
+                            "description": "An object that contains the names, default values, and sources of the dimensions associated with an Amazon CloudWatch event destination.",
+                            "properties": {
+                                "DimensionConfigurations": {
+                                    "description": "A list of dimensions upon which to categorize your emails when you publish email sending events to Amazon CloudWatch.",
+                                    "items": {
+                                        "description": "<p>Contains the dimension configuration to use when you publish email sending events to Amazon CloudWatch.</p> <p>For information about publishing email sending events to Amazon CloudWatch, see the <a href=\"http://docs.aws.amazon.com/ses/latest/DeveloperGuide/monitor-sending-activity.html\">Amazon SES Developer Guide</a>.</p>",
+                                        "properties": {
+                                            "DefaultDimensionValue": {
+                                                "description": "<p>The default value of the dimension that is published to Amazon CloudWatch if you do not provide the value of the dimension when you send an email. The default value must:</p> <ul> <li> <p>This value can only contain ASCII letters (a-z, A-Z), numbers (0-9), underscores (_), or dashes (-).</p> </li> <li> <p>Contain less than 256 characters.</p> </li> </ul>",
+                                                "type": "string"
+                                            },
+                                            "DimensionName": {
+                                                "description": "<p>The name of an Amazon CloudWatch dimension associated with an email sending metric. The name must:</p> <ul> <li> <p>This value can only contain ASCII letters (a-z, A-Z), numbers (0-9), underscores (_), or dashes (-).</p> </li> <li> <p>Contain less than 256 characters.</p> </li> </ul>",
+                                                "type": "string"
+                                            },
+                                            "DimensionValueSource": {
+                                                "description": "The place where Amazon SES finds the value of a dimension to publish to Amazon CloudWatch. If you want Amazon SES to use the message tags that you specify using an <code>X-SES-MESSAGE-TAGS</code> header or a parameter to the <code>SendEmail</code>/<code>SendRawEmail</code> API, choose <code>messageTag</code>. If you want Amazon SES to use your own email headers, choose <code>emailHeader</code>.",
+                                                "enum": [
+                                                    "messageTag",
+                                                    "emailHeader",
+                                                    "linkTag"
+                                                ],
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "DimensionName",
+                                            "DimensionValueSource",
+                                            "DefaultDimensionValue"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "DimensionConfigurations"
+                            ],
+                            "type": "object"
+                        },
+                        "Enabled": {
+                            "description": "Sets whether Amazon SES publishes events to this destination when you send an email with the associated configuration set. Set to <code>true</code> to enable publishing to this destination; set to <code>false</code> to prevent publishing to this destination. The default value is <code>false</code>.",
+                            "type": "boolean"
+                        },
+                        "KinesisFirehoseDestination": {
+                            "description": "An object that contains the delivery stream ARN and the IAM role ARN associated with an Amazon Kinesis Firehose event destination.",
+                            "properties": {
+                                "DeliveryStreamARN": {
+                                    "description": "The ARN of the Amazon Kinesis Firehose stream that email sending events should be published to.",
+                                    "type": "string"
+                                },
+                                "IAMRoleARN": {
+                                    "description": "The ARN of the IAM role under which Amazon SES publishes email sending events to the Amazon Kinesis Firehose stream.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "IAMRoleARN",
+                                "DeliveryStreamARN"
+                            ],
+                            "type": "object"
+                        },
+                        "MatchingEventTypes": {
+                            "description": "The type of email sending events to publish to the event destination.",
+                            "items": {
+                                "enum": [
+                                    "send",
+                                    "reject",
+                                    "bounce",
+                                    "complaint",
+                                    "delivery",
+                                    "open",
+                                    "click",
+                                    "renderingFailure"
+                                ],
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "Name": {
+                            "description": "<p>The name of the event destination. The name must:</p> <ul> <li> <p>This value can only contain ASCII letters (a-z, A-Z), numbers (0-9), underscores (_), or dashes (-).</p> </li> <li> <p>Contain less than 64 characters.</p> </li> </ul>",
+                            "type": "string"
+                        },
+                        "SNSDestination": {
+                            "description": "An object that contains the topic ARN associated with an Amazon Simple Notification Service (Amazon SNS) event destination.",
+                            "properties": {
+                                "TopicARN": {
+                                    "description": "The ARN of the Amazon SNS topic that email sending events will be published to. An example of an Amazon SNS topic ARN is <code>arn:aws:sns:us-west-2:123456789012:MyTopic</code>. For more information about Amazon SNS topics, see the <a href=\"http://docs.aws.amazon.com/sns/latest/dg/CreateTopic.html\">Amazon SNS Developer Guide</a>.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "TopicARN"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "Name",
+                        "MatchingEventTypes"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "ConfigurationSetName",
+                "EventDestination"
+            ],
+            "type": "object"
+        },
+        "X_Amz_Content_Sha256": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Date": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Algorithm": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Credential": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Security_Token": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Signature": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_SignedHeaders": {
+            "required": false,
+            "type": "string"
+        }
+    }
+}

@@ -1,0 +1,73 @@
+{
+    "type": "object",
+    "properties": {
+        "Action": {
+            "required": true,
+            "type": "string"
+        },
+        "Version": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "Represents a request to specify the Amazon SNS topic to which Amazon SES will publish bounce, complaint, or delivery notifications for emails sent with that identity as the Source. For information about Amazon SES notifications, see the <a href=\"http://docs.aws.amazon.com/ses/latest/DeveloperGuide/notifications-via-sns.html\">Amazon SES Developer Guide</a>.",
+            "example": {
+                "Identity": "user@example.com",
+                "NotificationType": "Bounce",
+                "SnsTopic": "arn:aws:sns:us-west-2:111122223333:MyTopic"
+            },
+            "properties": {
+                "Identity": {
+                    "description": "<p>The identity (email address or domain) that you want to set the Amazon SNS topic for.</p> <important> <p>You can only specify a verified identity for this parameter.</p> </important> <p>You can specify an identity by using its name or by using its Amazon Resource Name (ARN). The following examples are all valid identities: <code>sender@example.com</code>, <code>example.com</code>, <code>arn:aws:ses:us-east-1:123456789012:identity/example.com</code>.</p>",
+                    "type": "string"
+                },
+                "NotificationType": {
+                    "description": "The type of notifications that will be published to the specified Amazon SNS topic.",
+                    "enum": [
+                        "Bounce",
+                        "Complaint",
+                        "Delivery"
+                    ],
+                    "type": "string"
+                },
+                "SnsTopic": {
+                    "description": "The Amazon Resource Name (ARN) of the Amazon SNS topic. If the parameter is omitted from the request or a null value is passed, <code>SnsTopic</code> is cleared and publishing is disabled.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Identity",
+                "NotificationType"
+            ],
+            "type": "object"
+        },
+        "X_Amz_Content_Sha256": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Date": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Algorithm": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Credential": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Security_Token": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Signature": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_SignedHeaders": {
+            "required": false,
+            "type": "string"
+        }
+    }
+}

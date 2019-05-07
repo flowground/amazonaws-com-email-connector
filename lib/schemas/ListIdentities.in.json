@@ -1,0 +1,68 @@
+{
+    "type": "object",
+    "properties": {
+        "MaxItems": {
+            "required": false,
+            "type": "string"
+        },
+        "NextToken": {
+            "required": false,
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "Represents a request to return a list of all identities (email addresses and domains) that you have attempted to verify under your AWS account, regardless of verification status.",
+            "example": {
+                "IdentityType": "EmailAddress",
+                "MaxItems": 123,
+                "NextToken": ""
+            },
+            "properties": {
+                "IdentityType": {
+                    "description": "The type of the identities to list. Possible values are \"EmailAddress\" and \"Domain\". If this parameter is omitted, then all identities will be listed.",
+                    "enum": [
+                        "EmailAddress",
+                        "Domain"
+                    ],
+                    "type": "string"
+                },
+                "MaxItems": {
+                    "description": "The maximum number of identities per page. Possible values are 1-1000 inclusive.",
+                    "type": "integer"
+                },
+                "NextToken": {
+                    "description": "The token to use for pagination.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "X_Amz_Content_Sha256": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Date": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Algorithm": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Credential": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Security_Token": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_Signature": {
+            "required": false,
+            "type": "string"
+        },
+        "X_Amz_SignedHeaders": {
+            "required": false,
+            "type": "string"
+        }
+    }
+}
